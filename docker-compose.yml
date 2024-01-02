@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+  nginx:
+    image: nginx:latest
+    working_dir: "/app/"
+    volumes:
+      - ./:/app/:ro
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d
+      - ./web:/var/www/web
+      - ./logs:/var/log/nginx
+    ports:
+      - "80:80"
+
+  php:
+    build:
+      context: ./docker/php
+    working_dir: "/app"
+    volumes:
+      - ./:/app
+
+#docker run --rm -it -v "$(pwd):/app" composer/composer:2.1.8 dump-autoload
+#docker run --rm -it -v "$(pwd):/app" composer/composer:2.1.8 update
+#docker run --rm -it -v "$(pwd):/app" composer/composer:2.1.8 install
